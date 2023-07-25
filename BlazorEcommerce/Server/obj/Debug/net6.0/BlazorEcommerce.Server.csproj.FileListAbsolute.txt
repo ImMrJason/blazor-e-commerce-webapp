@@ -37,11 +37,6 @@ C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0
 C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\BlazorEcommerce.Server.MvcApplicationPartsAssemblyInfo.cache
 C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\BlazorEcommerce.Server.RazorAssemblyInfo.cache
 C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\BlazorEcommerce.Server.RazorAssemblyInfo.cs
-C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets\msbuild.BlazorEcommerce.Server.Microsoft.AspNetCore.StaticWebAssets.props
-C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets\msbuild.build.BlazorEcommerce.Server.props
-C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.BlazorEcommerce.Server.props
-C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.BlazorEcommerce.Server.props
-C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets.pack.json
 C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets.build.json
 C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets.development.json
 C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\scopedcss\bundle\BlazorEcommerce.Server.styles.css
