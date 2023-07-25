@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Ignore specific Debug Folder
+BlazorEcommerce\Client\bin\Debug\*
+BlazorEcommerce\Client\obj\Debug\*
+
