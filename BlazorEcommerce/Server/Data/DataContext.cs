@@ -5,7 +5,7 @@
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Seed some product data to the database
