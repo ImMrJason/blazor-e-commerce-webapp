@@ -5,6 +5,8 @@
         List<Product> Products { get; set; }
 
         Task GetProducts();
+
+        Task<ServiceResponse<Product>> GetProduct(int productId);
     }
 
     public class ProductService : IProductService
@@ -16,6 +18,13 @@
             _http = http;
         }
         public List<Product> Products { get; set; } = new List<Product>();
+
+        public async Task<ServiceResponse<Product>> GetProduct(int productId)
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<Product>>($"api/Product/{productId}");
+
+            return result;
+        }
 
         public async Task GetProducts()
         {
