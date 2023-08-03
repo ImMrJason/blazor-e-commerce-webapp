@@ -6,37 +6,18 @@ namespace BlazorEcommerce.Server.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private static List<Product> products = new List<Product>()
+        private readonly DataContext _context;
+
+        public ProductController(DataContext context)
         {
-            new Product()
-            {
-                Id = 1,
-                Title = "Product 1",
-                Description = "This is the description for product 1",
-                ImageUrl = "https://via.placeholder.com/250",
-                Price = 9.99M
-            },
-            new Product()
-            {
-                Id = 2,
-                Title = "Product 2",
-                Description = "This is the description for product 2",
-                ImageUrl = "https://via.placeholder.com/250",
-                Price = 19.99M
-            },
-            new Product()
-            {
-                Id = 3,
-                Title = "Product 3",
-                Description = "This is the description for product 3",
-                ImageUrl = "https://via.placeholder.com/250",
-                Price = 29.99M
-            }
-        };
+            _context = context;
+        }
 
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
+            var products = await _context.Products.ToListAsync();
+
             return Ok(products);
         }
     }
