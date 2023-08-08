@@ -17,6 +17,7 @@
         {
             _http = http;
         }
+
         public List<Product> Products { get; set; } = new List<Product>();
 
         public async Task<ServiceResponse<Product>> GetProduct(int productId)
