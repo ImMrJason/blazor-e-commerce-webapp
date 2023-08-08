@@ -5,6 +5,8 @@
         Task<ServiceResponse<List<Product>>> GetProducts();
 
         Task<ServiceResponse<Product>> GetProduct(int productId);
+
+        Task<ServiceResponse<List<Product>>> GetProductsByCategory(string categoryUrl);
     }
 
     public class ProductService : IProductService
@@ -39,6 +41,16 @@
             }
 
             response.Data = product;
+            return response;
+        }
+
+        public async Task<ServiceResponse<List<Product>>> GetProductsByCategory(string categoryUrl)
+        {
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data = await _context.Products.Where(p => p.Category.Url.ToLower() == categoryUrl.ToLower()).ToListAsync()
+            };
+
             return response;
         }
     }

@@ -13,7 +13,6 @@ namespace BlazorEcommerce.Server.Controllers
             _categoryService = categoryService;
         }
 
-        // Get all categories as action result of service response of list of categories
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<Category>>>> GetCategories()
         {
