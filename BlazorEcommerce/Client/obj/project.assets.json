@@ -1788,19 +1788,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jgett\\.nuget\\packages\\": {}
+    "C:\\Users\\jgett\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\data\\codespace\\blazor\\BlazorEcommerce\\BlazorEcommerce\\Client\\BlazorEcommerce.Client.csproj",
+      "projectUniqueName": "C:\\data\\codespace\\blazor\\blazor-e-commerce-webapp\\BlazorEcommerce\\Client\\BlazorEcommerce.Client.csproj",
       "projectName": "BlazorEcommerce.Client",
-      "projectPath": "C:\\data\\codespace\\blazor\\BlazorEcommerce\\BlazorEcommerce\\Client\\BlazorEcommerce.Client.csproj",
+      "projectPath": "C:\\data\\codespace\\blazor\\blazor-e-commerce-webapp\\BlazorEcommerce\\Client\\BlazorEcommerce.Client.csproj",
       "packagesPath": "C:\\Users\\jgett\\.nuget\\packages\\",
-      "outputPath": "C:\\data\\codespace\\blazor\\BlazorEcommerce\\BlazorEcommerce\\Client\\obj\\",
+      "outputPath": "C:\\data\\codespace\\blazor\\blazor-e-commerce-webapp\\BlazorEcommerce\\Client\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
         "C:\\Users\\jgett\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1808,14 +1815,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\data\\codespace\\blazor\\BlazorEcommerce\\BlazorEcommerce\\Shared\\BlazorEcommerce.Shared.csproj": {
-              "projectPath": "C:\\data\\codespace\\blazor\\BlazorEcommerce\\BlazorEcommerce\\Shared\\BlazorEcommerce.Shared.csproj"
+            "C:\\data\\codespace\\blazor\\blazor-e-commerce-webapp\\BlazorEcommerce\\Shared\\BlazorEcommerce.Shared.csproj": {
+              "projectPath": "C:\\data\\codespace\\blazor\\blazor-e-commerce-webapp\\BlazorEcommerce\\Shared\\BlazorEcommerce.Shared.csproj"
             }
           }
         }
@@ -1854,7 +1862,7 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
-            "version": "[6.0.20, 6.0.20]"
+            "version": "[6.0.21, 6.0.21]"
           }
         ],
         "frameworkReferences": {
@@ -1862,7 +1870,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.412\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {
