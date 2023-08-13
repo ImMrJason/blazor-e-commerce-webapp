@@ -21,7 +21,7 @@ else {
             </a>
             <p>@product.Description</p>
             <h5 class="price">
-                @* $@product.Price *@
+                @GetPriceText(product)
             </h5>
         </div>
     </li>
@@ -40,5 +40,27 @@ else {
     {
         // unsubscribe from the ProductsChanged event
         ProductService.ProductsChanged -= StateHasChanged;
+    }
+
+    // method for getting the price text. take into consideration the variants for the product
+    // if there are no variants, just return an empty string. if there is exactly one variant, return the price of that variant.
+    // if there are multiple variants, return the minimum price.
+    public string GetPriceText(Product product)
+    {
+        var variants = product.Variants;
+
+        if (variants.Count == 0)
+        {
+            return string.Empty;
+        }
+        else if (variants.Count == 1)
+        {
+            return $"${variants[0].Price}";
+        }
+        else
+        {
+            var minPrice = variants.Min(v => v.Price);
+            return $"Starting at ${minPrice}";
+        }
     }
 }
