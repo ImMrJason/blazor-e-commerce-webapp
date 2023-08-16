@@ -21,7 +21,7 @@
         public async Task GetCategories()
         {
             // use the http object to call our endpoint api/category to get a list of categories
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<Category>>>("api/Category");
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<Category>>>("api/category");
 
             if (result != null && result.Data != null)
             {
