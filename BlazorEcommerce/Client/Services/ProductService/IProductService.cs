@@ -65,7 +65,7 @@
             }
 
             if (Products.Count == 0) Message = "No products found.";
-            
+
             ProductsChanged.Invoke();
         }
 

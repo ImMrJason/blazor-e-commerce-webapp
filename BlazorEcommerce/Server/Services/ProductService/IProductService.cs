@@ -8,7 +8,7 @@
 
         Task<ServiceResponse<List<Product>>> GetProductsByCategory(string categoryUrl);
 
-        Task<ServiceResponse<List<Product>>> SearchProducts(string searchText);
+        Task<ServiceResponse<ProductSearchResult>> SearchProducts(string searchText, int page);
 
         Task<ServiceResponse<List<string>>> GetProductSuggestions(string searchText);
 
@@ -66,12 +66,26 @@
             return response;
         }
 
-        public async Task<ServiceResponse<List<Product>>> SearchProducts(string searchText)
+        public async Task<ServiceResponse<ProductSearchResult>> SearchProducts(string searchText, int page)
         {
+            var productsPerPage = 2f;
+            var pageCount = Math.Ceiling((await FindProductsBySearchText(searchText)).Count / productsPerPage);
+            var products = await _context.Products
+                            .Where(p => p.Title.ToLower().Contains(searchText) || p.Description.ToLower().Contains(searchText))
+                            .Include(p => p.Variants)
+                            .Skip((page - 1) * (int)productsPerPage)
+                            .Take((int)productsPerPage)
+                            .ToListAsync();
+
             // find products where the title or description contains the search text
-            var response = new ServiceResponse<List<Product>>
+            var response = new ServiceResponse<ProductSearchResult>
             {
-                Data = await FindProductsBySearchText(searchText)
+                Data = new ProductSearchResult
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    Pages = (int)pageCount
+                }
             };
 
             return response;
