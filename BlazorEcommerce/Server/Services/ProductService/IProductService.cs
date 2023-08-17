@@ -11,6 +11,8 @@
         Task<ServiceResponse<List<Product>>> SearchProducts(string searchText);
 
         Task<ServiceResponse<List<string>>> GetProductSuggestions(string searchText);
+
+        Task<ServiceResponse<List<Product>>> GetFeaturedProducts();
     }
 
     public class ProductService : IProductService
@@ -120,5 +122,17 @@
                             .ToListAsync();
         }
 
+        public async Task<ServiceResponse<List<Product>>> GetFeaturedProducts()
+        {
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data = await _context.Products
+                .Where(p => p.Featured)
+                .Include(p => p.Variants)
+                .ToListAsync()
+            };
+
+            return response;
+        }
     }
 }

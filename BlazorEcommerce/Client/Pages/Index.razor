@@ -5,7 +5,15 @@
 
 <PageTitle>My Shop</PageTitle>
 
-<ProductList />
+@* if we don't have Search Text or the Category Url is null, then show FeaturesProducts. Otherwise use ProductList *@
+@if (SearchText == null && CategoryUrl == null)
+{
+    <FeaturedProducts />
+}
+else
+{
+    <ProductList />
+}
 
 @code {
     [Parameter]
