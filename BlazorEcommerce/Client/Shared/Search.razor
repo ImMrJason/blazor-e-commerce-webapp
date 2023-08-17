@@ -1,0 +1,68 @@
+﻿
+@* Navigation Mananger is used to navigate between pages. It is a built-in service in Blazor *@
+@inject NavigationManager NavigationManager
+@inject IProductService ProductService
+
+<div class="input-group">
+    @* By default, @bind on a text input will update the bound variable when the onchange event is fired (typically when the input loses focus).
+       However, with @bind-value and @bind-value:event, you have the flexibility to specify which event should trigger the update. *@
+    <input @bind-value="searchText"
+           @bind-value:event="oninput"
+           @onkeyup="HandleSearch"
+           @ref="searchInput"
+           type="search"
+           list="products"
+           class="form-control" 
+           placeholder="Search..." />
+
+    <datalist id="products">
+        @foreach (var suggestion in suggestions)
+        {
+            <option>@suggestion</option>
+        }
+    </datalist>
+    <div class="input-group-append">
+        <button class="btn btn-primary" @onclick="SearchProducts">
+            <span class="oi oi-magnifying-glass" />
+        </button>
+    </div>
+</div>
+
+@code {
+    private string searchText = string.Empty;
+    private List<string> suggestions = new List<string>();
+    protected ElementReference searchInput;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // put the focus on the search input
+            await searchInput.FocusAsync();
+        }
+    }
+
+    // method to search when the user presses the enter key or clicks the search button.
+    private void SearchProducts()
+    {
+        // navigate to the search page
+        NavigationManager.NavigateTo($"/search/{searchText}");
+    }
+
+    // handleSearch method using keyboard events. this is called each time the user presses a key.
+    private async Task HandleSearch(KeyboardEventArgs args)
+    {
+        if (args.Key == null || args.Key.Equals("Enter"))
+        {
+            SearchProducts();
+        }
+        // if the user enters 2 or more characters, start using suggestions
+        else if (searchText.Length > 1)
+        {
+            suggestions = await ProductService.GetProductSuggestions(searchText);
+        }
+        
+    }
+
+
+}
