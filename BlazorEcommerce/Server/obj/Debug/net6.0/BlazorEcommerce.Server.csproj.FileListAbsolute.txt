@@ -215,3 +215,8 @@ C:\data\codespace\blazor\blazor-e-commerce-webapp\BlazorEcommerce\Server\obj\Deb
 C:\data\codespace\blazor\blazor-e-commerce-webapp\BlazorEcommerce\Server\obj\Debug\net6.0\BlazorEcommerce.Server.pdb
 C:\data\codespace\blazor\blazor-e-commerce-webapp\BlazorEcommerce\Server\obj\Debug\net6.0\BlazorEcommerce.Server.genruntimeconfig.cache
 C:\data\codespace\blazor\blazor-e-commerce-webapp\BlazorEcommerce\Server\obj\Debug\net6.0\ref\BlazorEcommerce.Server.dll
+C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets\msbuild.BlazorEcommerce.Server.Microsoft.AspNetCore.StaticWebAssets.props
+C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets\msbuild.build.BlazorEcommerce.Server.props
+C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.BlazorEcommerce.Server.props
+C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.BlazorEcommerce.Server.props
+C:\data\codespace\blazor\BlazorEcommerce\BlazorEcommerce\Server\obj\Debug\net6.0\staticwebassets.pack.json
