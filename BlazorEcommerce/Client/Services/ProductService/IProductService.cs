@@ -57,7 +57,7 @@
             CurrentPage = 1;
             PageCount = 0;
 
-            if(Products.Count == 0) Message = "No products found.";
+            if (Products.Count == 0) Message = "No products found.";
 
             ProductsChanged.Invoke();
         }
