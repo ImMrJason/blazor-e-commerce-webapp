@@ -84,7 +84,7 @@
                 {
                     Products = products,
                     CurrentPage = page,
-                    Pages = (int)pageCount
+                    PageCount = (int)pageCount
                 }
             };
 
