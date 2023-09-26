@@ -1,6 +1,7 @@
 global using BlazorEcommerce.Server.Data;
 global using BlazorEcommerce.Server.Services.CategoryService;
 global using BlazorEcommerce.Server.Services.ProductService;
+global using BlazorEcommerce.Server.Services.CartService;
 global using BlazorEcommerce.Shared;
 global using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IProductService, ProductService>();  // Add the ProductService as a scoped service
 builder.Services.AddScoped<ICategoryService, CategoryService>(); // Add the CategoryService as a scoped service;
+builder.Services.AddScoped<ICartService, CartService>(); // Add the CartService as a scoped service;
 
 
 var app = builder.Build();
