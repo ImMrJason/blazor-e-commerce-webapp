@@ -8,6 +8,7 @@ namespace BlazorEcommerce.Client.Services.CartService
         Task AddToCart(CartItem cartItem);
         Task<List<CartItem>> GetCartItems();
         Task<List<CartProductResponse>> GetCartProducts();
+        Task RemoveProductFromCart(int productId, int productTypeId);
     }
 
     public class CartService : ICartService
@@ -65,6 +66,24 @@ namespace BlazorEcommerce.Client.Services.CartService
             var cartProducts = await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartProductResponse>>>();
 
             return cartProducts.Data;
+        }
+
+        public async Task RemoveProductFromCart(int productId, int productTypeId)
+        {
+            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+            if (cart == null)
+            {
+                return;
+            }
+
+            var cartItem = cart.Find(x => x.ProductId == productId && x.ProductTypeId == productTypeId);
+
+            if (cartItem != null)
+            {
+                cart.Remove(cartItem);
+                await _localStorage.SetItemAsync("cart", cart);
+                OnChange.Invoke();
+            }
         }
     }
 }
