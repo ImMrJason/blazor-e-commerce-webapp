@@ -5,19 +5,20 @@ namespace BlazorEcommerce.Client.Services.CartService
     public interface ICartService
     {
         event Action OnChange;
-
         Task AddToCart(CartItem cartItem);
-
         Task<List<CartItem>> GetCartItems();
+        Task<List<CartProductResponse>> GetCartProducts();
     }
 
     public class CartService : ICartService
     {
         private readonly ILocalStorageService _localStorage;
+        private readonly HttpClient _http;
 
-        public CartService(ILocalStorageService localStorage)
+        public CartService(ILocalStorageService localStorage, HttpClient http)
         {
             _localStorage = localStorage;
+            _http = http;
         }
 
         public event Action OnChange;
@@ -51,6 +52,19 @@ namespace BlazorEcommerce.Client.Services.CartService
             }
 
             return cart;
+        }
+
+        public async Task<List<CartProductResponse>> GetCartProducts()
+        {
+            // get "cart" from local storage
+            var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+
+            // use _http to get the products from the server (using post)
+            var response = await _http.PostAsJsonAsync("api/cart/products", cartItems);
+
+            var cartProducts = await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartProductResponse>>>();
+
+            return cartProducts.Data;
         }
     }
 }

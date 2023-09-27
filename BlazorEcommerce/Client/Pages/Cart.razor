@@ -1,0 +1,54 @@
+﻿@page "/cart"
+@inject ICartService CartService
+
+<PageTitle>Shopping Cart</PageTitle>
+<h3>Shopping Cart</h3>
+
+@* if we don't have any items in the cart (local storage), or the count is 0, display the message *@
+@if (cartProducts == null || cartProducts.Count == 0)
+{
+    <p>@message</p>
+}
+@* else, add a div, and loop through each cart product *@
+else
+{
+     <div>
+        @foreach (var product in cartProducts)
+        {
+            <div class="container">
+                <div class="image-wrapper">
+                    <img src="@product.ImageUrl" class="image" />
+                </div>
+                <div class="name">
+                    <h5><a href="/product/@product.ProductId">@product.Title</a></h5>
+                    <span>@product.ProductType</span>
+                 </div>
+                 <div class="cart-product-price">$@product.Price</div>
+            </div>
+        }
+        <div class="cart-product-price">
+            Total (@cartProducts.Count): $@cartProducts.Sum(p => p.Price)
+        </div>
+    </div>
+}
+
+@code {
+    List<CartProductResponse> cartProducts = null;
+    string message = "Loading cart...";
+
+    // On Initialized
+    protected override async Task OnInitializedAsync()
+    {
+        // if we don't have any items in the cart (local storage), initialize the cart
+        if ((await CartService.GetCartItems()).Count == 0)
+        {
+            message = "Your cart is empty";
+            cartProducts = new List<CartProductResponse>();
+        }
+        // else, get the cart products from the server based on the existing local storage
+        else
+        {
+            cartProducts = await CartService.GetCartProducts();
+        }
+    }
+}
