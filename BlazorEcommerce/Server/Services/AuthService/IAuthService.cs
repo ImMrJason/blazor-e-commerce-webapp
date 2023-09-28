@@ -40,7 +40,8 @@ namespace BlazorEcommerce.Server.Services.AuthService
 
             return new ServiceResponse<int>
             {
-                Data = user.Id
+                Data = user.Id,
+                Message = "User created successfully."
             };
         }
 
