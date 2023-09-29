@@ -2,7 +2,8 @@
 {
     public interface IAuthService
     {
-        Task<ServiceResponse<int>> Register(UserRegister request);       
+        Task<ServiceResponse<int>> Register(UserRegister request);
+        Task<ServiceResponse<string>> Login(UserLogin request);
         Task<bool> IsUserAuthenticated();
     }
 
@@ -13,6 +14,12 @@
         public AuthService(HttpClient http)
         {
             _http = http;
+        }
+
+        public async Task<ServiceResponse<string>> Login(UserLogin request)
+        {
+            var result = await _http.PostAsJsonAsync("api/auth/login", request);
+            return await result.Content.ReadFromJsonAsync<ServiceResponse<string>>();
         }
 
         public Task<bool> IsUserAuthenticated()
