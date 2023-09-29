@@ -3,6 +3,7 @@
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
 @inject ICartService CartService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Login</PageTitle>
 
@@ -46,6 +47,10 @@
             errorMessage = string.Empty;
 
             await LocalStorage.SetItemAsync("authToken", result.Data);
+
+            // refresh the authentication state so components in the app can get the updated user state
+            await AuthenticationStateProvider.GetAuthenticationStateAsync(); 
+
             NavigationManager.NavigateTo(returnUrl);
         }
         else
