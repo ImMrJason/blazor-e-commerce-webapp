@@ -8,6 +8,10 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // composite key for CartItem
+            modelBuilder.Entity<CartItem>()
+                .HasKey(ci => new { ci.UserId, ci.ProductId, ci.ProductTypeId });
+
             // composite key for ProductVariant
             modelBuilder.Entity<ProductVariant>()
                 .HasKey(pv => new { pv.ProductId, pv.ProductTypeId });
@@ -267,5 +271,7 @@
         public DbSet<ProductVariant> ProductVariants { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }
