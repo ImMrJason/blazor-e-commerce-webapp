@@ -5,6 +5,7 @@
 @inject NavigationManager NavigationManager
 @inject ICartService CartService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ICartService CartService
 
 <PageTitle>Login</PageTitle>
 
@@ -59,7 +60,10 @@
             await LocalStorage.SetItemAsync("authToken", result.Data);
 
             // refresh the authentication state so components in the app can get the updated user state
-            await AuthenticationStateProvider.GetAuthenticationStateAsync(); 
+            await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+            // Store the local cart items to the database, then empty the local storage (local cart)
+            await CartService.StoreCartItems(true);
 
             NavigationManager.NavigateTo(returnUrl);
         }

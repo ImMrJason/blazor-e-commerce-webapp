@@ -39,7 +39,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
-
+// This allows requests to know details about the current user, as determined by the JWT token (bearer token).
+// In this way, our service layer can directly access the user's ID, without having to pass it in as a parameter from the controller.
+// This keeps our controllers clean/slim, and allows us to keep the user's ID in the service layer, where it will be used.
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

@@ -1,18 +1,27 @@
-﻿namespace BlazorEcommerce.Server.Services.CartService
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
+namespace BlazorEcommerce.Server.Services.CartService
 {
     public interface ICartService
     {
         Task<ServiceResponse<List<CartProductResponse>>> GetCartProducts(List<CartItem> cartItems);
+        Task<ServiceResponse<List<CartProductResponse>>> StoreCartItems(List<CartItem> cartItems1);
+        Task<ServiceResponse<int>> GetCartItemsCount();
     }
 
     public class CartService : ICartService
     {
         private readonly DataContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CartService(DataContext context)
+        public CartService(DataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         public async Task<ServiceResponse<List<CartProductResponse>>> GetCartProducts(List<CartItem> cartItems)
         {
@@ -59,6 +68,26 @@
             }
 
             return result;
+        }
+
+        async Task<ServiceResponse<List<CartProductResponse>>> ICartService.StoreCartItems(List<CartItem> cartItems)
+        {
+            cartItems.ForEach(cartItem => cartItem.UserId = GetUserId());
+
+            // This method adds each item in the cartItems list to the CartItems entity set in the context.
+            // Essentially, it's preparing a batch of new CartItem records to be added to the database.
+            // This is more efficient than adding each CartItem individually, especially when dealing with a large number of items.
+            _context.CartItems.AddRange(cartItems);
+
+            await _context.SaveChangesAsync();
+
+            return await GetCartProducts(await _context.CartItems.Where(ci => ci.UserId == GetUserId()).ToListAsync());
+        }
+
+        public async Task<ServiceResponse<int>> GetCartItemsCount()
+        {
+            var count = (await _context.CartItems.Where(ci => ci.UserId == GetUserId()).ToListAsync()).Count;
+            return new ServiceResponse<int> { Data = count };
         }
     }
 }
