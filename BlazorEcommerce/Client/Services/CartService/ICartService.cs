@@ -32,34 +32,33 @@ namespace BlazorEcommerce.Client.Services.CartService
         {
             if (await IsUserAuthenticated())
             {
-                Console.WriteLine("User is authenticated");
+                await _http.PostAsJsonAsync("api/cart/add", cartItem);
             }
             else
             {
-                Console.WriteLine("User is not authenticated");
+                var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+
+                if (cart == null)
+                {
+                    // create cart if it doesn't exist yet
+                    cart = new List<CartItem>();
+                }
+
+                // if the same item is already in the cart, increase the quantity
+                var sameItem = cart.Find(x => x.ProductId == cartItem.ProductId && x.ProductTypeId == cartItem.ProductTypeId);
+                if (sameItem == null)
+                {
+                    cart.Add(cartItem);
+                }
+                else
+                {
+                    sameItem.Quantity += cartItem.Quantity;
+                }
+
+                // set the cart in local storage
+                await _localStorage.SetItemAsync("cart", cart);
             }
 
-            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
-
-            if (cart == null)
-            {
-                // create cart if it doesn't exist yet
-                cart = new List<CartItem>();
-            }
-
-            // if the same item is already in the cart, increase the quantity
-            var sameItem = cart.Find(x => x.ProductId == cartItem.ProductId && x.ProductTypeId == cartItem.ProductTypeId);
-            if (sameItem == null)
-            {
-                cart.Add(cartItem);
-            }
-            else
-            {
-                sameItem.Quantity += cartItem.Quantity;
-            }
-
-            // set the cart in local storage
-            await _localStorage.SetItemAsync("cart", cart);
             await AdjustCartItemsCount();
         }
 
@@ -86,7 +85,7 @@ namespace BlazorEcommerce.Client.Services.CartService
             if(await IsUserAuthenticated()) {
                 // use _http to get the products from the server
                 var response = await _http.GetFromJsonAsync<ServiceResponse<List<CartProductResponse>>>("api/cart");
-                
+
                 return response.Data;
             }
             else {

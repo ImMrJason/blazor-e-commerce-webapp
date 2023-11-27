@@ -9,6 +9,7 @@ namespace BlazorEcommerce.Server.Services.CartService
         Task<ServiceResponse<List<CartProductResponse>>> StoreCartItems(List<CartItem> cartItems1);
         Task<ServiceResponse<int>> GetCartItemsCount();
         Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProducts();
+        Task<ServiceResponse<bool>> AddToCart(CartItem cartItem);
     }
 
     public class CartService : ICartService
@@ -96,6 +97,29 @@ namespace BlazorEcommerce.Server.Services.CartService
         public async Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProducts()
         {
             return await GetCartProducts(await _context.CartItems.Where(ci => ci.UserId == GetUserId()).ToListAsync());
+        }
+
+        public async Task<ServiceResponse<bool>> AddToCart(CartItem cartItem)
+        {
+            cartItem.UserId = GetUserId();
+
+            var sameItem = await _context.CartItems
+                .FirstOrDefaultAsync(
+                    ci => ci.ProductId == cartItem.ProductId &&
+                    ci.ProductTypeId == cartItem.ProductTypeId &&
+                    ci.UserId == cartItem.UserId);
+
+            if (sameItem == null) {
+                _context.CartItems.Add(cartItem);                
+            }
+            else {
+                // increment the quantity of the existing cart item by +1
+                sameItem.Quantity += cartItem.Quantity;
+            }
+
+            await _context.SaveChangesAsync();            
+
+            return new ServiceResponse<bool> { Data = true };
         }
     }
 }
