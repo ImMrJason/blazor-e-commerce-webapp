@@ -10,6 +10,7 @@ namespace BlazorEcommerce.Server.Services.CartService
         Task<ServiceResponse<int>> GetCartItemsCount();
         Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProducts();
         Task<ServiceResponse<bool>> AddToCart(CartItem cartItem);
+        Task<ServiceResponse<bool>> UpdateQuantity(CartItem cartItem);
     }
 
     public class CartService : ICartService
@@ -109,17 +110,44 @@ namespace BlazorEcommerce.Server.Services.CartService
                     ci.ProductTypeId == cartItem.ProductTypeId &&
                     ci.UserId == cartItem.UserId);
 
-            if (sameItem == null) {
-                _context.CartItems.Add(cartItem);                
+            if (sameItem == null)
+            {
+                _context.CartItems.Add(cartItem);
             }
-            else {
+            else
+            {
                 // increment the quantity of the existing cart item by +1
                 sameItem.Quantity += cartItem.Quantity;
             }
 
-            await _context.SaveChangesAsync();            
+            await _context.SaveChangesAsync();
 
             return new ServiceResponse<bool> { Data = true };
+        }
+
+        public async Task<ServiceResponse<bool>> UpdateQuantity(CartItem cartItem)
+        {
+            var dbCartItem = await _context.CartItems
+                .FirstOrDefaultAsync(
+                    ci => ci.ProductId == cartItem.ProductId &&
+                    ci.ProductTypeId == cartItem.ProductTypeId &&
+                    ci.UserId == GetUserId());
+
+            if (dbCartItem == null)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Data = false,
+                    Success = false,
+                    Message = "Cart item does not exist."
+                };
+            }
+
+            dbCartItem.Quantity = cartItem.Quantity;
+
+            await _context.SaveChangesAsync();
+
+            return new ServiceResponse<bool> {Data = true};
         }
     }
 }
