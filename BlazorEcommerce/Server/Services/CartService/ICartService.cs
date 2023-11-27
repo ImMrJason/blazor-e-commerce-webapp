@@ -8,6 +8,7 @@ namespace BlazorEcommerce.Server.Services.CartService
         Task<ServiceResponse<List<CartProductResponse>>> GetCartProducts(List<CartItem> cartItems);
         Task<ServiceResponse<List<CartProductResponse>>> StoreCartItems(List<CartItem> cartItems1);
         Task<ServiceResponse<int>> GetCartItemsCount();
+        Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProducts();
     }
 
     public class CartService : ICartService
@@ -23,6 +24,8 @@ namespace BlazorEcommerce.Server.Services.CartService
 
         private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
+        // This method takes a list of CartItem objects and returns a list of CartProductResponse objects.
+        // It uses the db to get the product and product variant information for each item in the cart.
         public async Task<ServiceResponse<List<CartProductResponse>>> GetCartProducts(List<CartItem> cartItems)
         {
             var result = new ServiceResponse<List<CartProductResponse>>
@@ -70,7 +73,7 @@ namespace BlazorEcommerce.Server.Services.CartService
             return result;
         }
 
-        async Task<ServiceResponse<List<CartProductResponse>>> ICartService.StoreCartItems(List<CartItem> cartItems)
+        public async Task<ServiceResponse<List<CartProductResponse>>> StoreCartItems(List<CartItem> cartItems)
         {
             cartItems.ForEach(cartItem => cartItem.UserId = GetUserId());
 
@@ -81,13 +84,18 @@ namespace BlazorEcommerce.Server.Services.CartService
 
             await _context.SaveChangesAsync();
 
-            return await GetCartProducts(await _context.CartItems.Where(ci => ci.UserId == GetUserId()).ToListAsync());
+            return await GetDbCartProducts();
         }
 
         public async Task<ServiceResponse<int>> GetCartItemsCount()
         {
             var count = (await _context.CartItems.Where(ci => ci.UserId == GetUserId()).ToListAsync()).Count;
             return new ServiceResponse<int> { Data = count };
+        }
+
+        public async Task<ServiceResponse<List<CartProductResponse>>> GetDbCartProducts()
+        {
+            return await GetCartProducts(await _context.CartItems.Where(ci => ci.UserId == GetUserId()).ToListAsync());
         }
     }
 }

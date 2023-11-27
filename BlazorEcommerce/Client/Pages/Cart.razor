@@ -59,17 +59,15 @@ else
 
     private async Task LoadCart()
     {
-        // if we don't have any items in the cart (local storage), initialize the cart
-        if ((await CartService.GetCartItems()).Count == 0)
+        await CartService.AdjustCartItemsCount();
+
+        cartProducts = await CartService.GetCartProducts();
+
+        // if we don't have any items in the cart (local storage), show the message
+        if (cartProducts == null || cartProducts.Count == 0)
         {
             message = "Your cart is empty";
-            cartProducts = new List<CartProductResponse>();
-        }
-        // else, get the cart products from the server based on the existing local storage
-        else
-        {
-            cartProducts = await CartService.GetCartProducts();
-        }
+        }        
     }
 
     private async Task UpdateQuantity(ChangeEventArgs e, CartProductResponse product)

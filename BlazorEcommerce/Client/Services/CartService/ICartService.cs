@@ -6,7 +6,6 @@ namespace BlazorEcommerce.Client.Services.CartService
     {
         event Action OnChange;
         Task AddToCart(CartItem cartItem);
-        Task<List<CartItem>> GetCartItems();
         Task<List<CartProductResponse>> GetCartProducts();
         Task RemoveProductFromCart(int productId, int productTypeId);
         Task UpdateQuantity(CartProductResponse product);
@@ -64,21 +63,6 @@ namespace BlazorEcommerce.Client.Services.CartService
             await AdjustCartItemsCount();
         }
 
-        public async Task<List<CartItem>> GetCartItems()
-        {
-            await AdjustCartItemsCount();
-
-            var cart = await _localStorage.GetItemAsync<List<CartItem>>("cart");
-
-            if (cart == null)
-            {
-                // create cart if it doesn't exist yet
-                cart = new List<CartItem>();
-            }
-
-            return cart;
-        }
-
         public async Task AdjustCartItemsCount()
         {
             if (await IsUserAuthenticated())
@@ -99,15 +83,28 @@ namespace BlazorEcommerce.Client.Services.CartService
 
         public async Task<List<CartProductResponse>> GetCartProducts()
         {
-            // get "cart" from local storage
-            var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
+            if(await IsUserAuthenticated()) {
+                // use _http to get the products from the server
+                var response = await _http.GetFromJsonAsync<ServiceResponse<List<CartProductResponse>>>("api/cart");
+                
+                return response.Data;
+            }
+            else {
+                // get "cart" from local storage
+                var cartItems = await _localStorage.GetItemAsync<List<CartItem>>("cart");
 
-            // use _http to get the products from the server (using post)
-            var response = await _http.PostAsJsonAsync("api/cart/products", cartItems);
+                if (cartItems == null)
+                {
+                    return new List<CartProductResponse>();
+                }
 
-            var cartProducts = await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartProductResponse>>>();
+                // use _http to get the product info from the server based on the cart items ids in local storage
+                var response = await _http.PostAsJsonAsync("api/cart/products", cartItems);
 
-            return cartProducts.Data;
+                var cartProducts = await response.Content.ReadFromJsonAsync<ServiceResponse<List<CartProductResponse>>>();
+
+                return cartProducts.Data;
+            }
         }
 
         public async Task RemoveProductFromCart(int productId, int productTypeId)

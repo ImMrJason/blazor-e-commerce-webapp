@@ -65,6 +65,9 @@
             // Store the local cart items to the database, then empty the local storage (local cart)
             await CartService.StoreCartItems(true);
 
+            // Make sure the cart items count matches the database cart items count
+            await CartService.AdjustCartItemsCount();
+
             NavigationManager.NavigateTo(returnUrl);
         }
         else
